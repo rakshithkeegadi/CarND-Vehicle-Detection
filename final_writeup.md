@@ -23,7 +23,15 @@ The goals / steps of this project are the following:
 [image6]: ./output_images/Car_Hog_image.png "Car_Hog_image"
 [image7]: ./output_images/cmap_jet.png "cmap_jet"
 [image8]: ./output_images/heatmap_gray.png "heatmap_gray"
+[image9]: ./output_images/Non_car.png "Non_car"
+[image10]: ./output_images/car_rectangles.png "car_rectangles"
+[image11]: ./output_images/final_car_image.png "final_car_image"
 
+Car_Hog_image.png	Commiting the images for writeup	7 hours ago
+Non_car.png	commit more image	4 minutes ago
+car_rectangles.png	commit more image	4 minutes ago
+cmap_jet.png	Commiting the images for writeup	7 hours ago
+heatmap_gray.png
 
 ### Histogram of Oriented Gradients (HOG)
 
@@ -35,6 +43,7 @@ The HOG features are extracted by using the function get_hog_features() and this
 ![alt text][image6]
 
 #### Non car image
+![alt text][image9]
 
 The hog features give us a clear understanding of a car images is different from a non car image. This sets us up to train our model so that when we run our video the model can identify car and non car images. 
 
@@ -67,7 +76,7 @@ The car images and non car images features are extracted and then they were rand
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-The sliding window was used to search the differnt parts of the image to read samples of images and the identify if they are car and non car images. The sliding winodw uses a small part of the complete image and checks if these images are car images. Here in the area of interest is the lower half of the images because the cars are not found on the upper half of the window. 
+The sliding window was used to search the differnt parts of the image to read samples of images and the identify if they are car and non car images. The sliding winodw uses a small part of the complete image and checks if these images are car images. Here, the area of interest is the lower half of the images because the cars are not found on the upper half of the window. 
 
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
@@ -89,9 +98,16 @@ Here are few examples of the scaled images.
 
 
 
-Once the scaling is done then we used to identify the multiple sliding windows in which we identify cars like the images shown below
+Once the scaling is done then we used to identify the multiple sliding windows in which we identify cars like the images shown below 
 
-After that 
+![alt text][image10]
+
+After that multiple rectangles are done then we use a heat map in the image to identify the region of the car in the image.
+
+![alt text][image8]
+
+Once the heat images are found we then go ahead and then draw the rectangle as shown in the image below so that this can be  used as a tempelate to run it on videos.
+![alt text][image11]
 
 
 ### Video Implementation
@@ -102,27 +118,20 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
+The pipeline was created very similar to the images but one extra thing I had to do was to identify the region of images and multiple sliding window scales used to gather images of the cars. The scales vary from 1 to 2.5 which does well in identifying the car.
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+The other extra thing I had to do with my images was to have a class and extract the most recent frames of data to draw the rectangles from the class variables. I used the recent most 5 rectangles from the video frames to identify the cars and hence this helped me get rid of most of the false positives.
 
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
-
+The code for the pipeline can be found under the pipeline section.
 
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+1. More data is required to make analysis of the car images. This might not identify the cars of all types
+2. The whole video and vehicle mapping is done in day light and care must be taken to impelent it in dark light
+3. It considers only cars we might see trucks and busses so other sets of images might be required.
 
