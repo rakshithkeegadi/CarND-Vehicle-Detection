@@ -27,17 +27,11 @@ The goals / steps of this project are the following:
 [image10]: ./output_images/car_rectangles.png "car_rectangles"
 [image11]: ./output_images/final_car_image.png "final_car_image"
 
-Car_Hog_image.png	Commiting the images for writeup	7 hours ago
-Non_car.png	commit more image	4 minutes ago
-car_rectangles.png	commit more image	4 minutes ago
-cmap_jet.png	Commiting the images for writeup	7 hours ago
-heatmap_gray.png
-
 ### Histogram of Oriented Gradients (HOG)
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-The HOG features are extracted by using the function get_hog_features() and this enables the classification of the imagee better. The way the hog features behave for a car and non car images is as shown as below
+The HOG features are extracted by using the function get_hog_features() and this enables the classification of the image better. The hog feature representation for a car and non car images is as shown as below
 
 #### Car image
 ![alt text][image6]
@@ -45,7 +39,7 @@ The HOG features are extracted by using the function get_hog_features() and this
 #### Non car image
 ![alt text][image9]
 
-The hog features give us a clear understanding of a car images is different from a non car image. This sets us up to train our model so that when we run our video the model can identify car and non car images. 
+The hog features give us a clear understanding of how a car images is different from a non car image. This sets us up to train our model so that when we run our video the model can identify car and non car images. 
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
@@ -66,9 +60,11 @@ The classifier parameters chosen to train the model is as mentioned below.
 | spatial_size  | (16,16)|
 | hist_bins     | 16     |
 
-We are training by choosing a data set which has almost equal sets of car and non car images. This is chosen to avoid overfitting. 
+We are training by choosing a data set which has almost equal sets of car and non car images. This is chosen to avoid overfitting images a specific class. 
 
-The car images and non car images features are extracted and then they were randomly shuffled so that the classifier does not memorize the images in sequential order. SVC Linear classifier was used to train and fit the model. Used 20 percent of the car and non car samples to split it as testing samples after training. Once the training was done the test samples were used to check the accuracy. The accuracy turned out to be 98.48%. 
+The car images and non car images features are extracted and then they were randomly shuffled so that the classifier does not memorize the images in sequential order. SVC Linear classifier was used to train and fit the model. 
+
+I used 20 percent of the car and non car samples to split it as testing samples after training. Once the training was done the test samples were used to check the accuracy. The accuracy turned out to be 98.48%. 
 
 
 
@@ -76,12 +72,12 @@ The car images and non car images features are extracted and then they were rand
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-The sliding window was used to search the differnt parts of the image to read samples of images and the identify if they are car and non car images. The sliding winodw uses a small part of the complete image and checks if these images are car images. Here, the area of interest is the lower half of the images because the cars are not found on the upper half of the window. 
+The sliding window was used to search the differnt parts of the image to read samples of images and the identify if they are car and non car images. The sliding window uses a small part of the complete image and checks if these images are car images. Here, the area of interest is the lower half of the images because the cars are not found on the upper half of the window. 
 
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-The following is the output of the pipline images. To predict the car images better I had to choose different scales for overlapping Y axis areas of interest. The challenging part was to identify the car when it was slight further away and make sure I had enough section of the image to identify it. Initially I used LUV and obatained an accuracy of 93% and then later changed to YCrCb and this improved the performace to 98%.
+The following is the output of the pipline images. To predict the car images better I had to choose different scales for overlapping Y axis areas of interest. The challenging part was to identify the car when it was slight further away and make sure I had enough section of the image to identify it. Initially I used LUV and obatained an accuracy of 93% and then later changed to YCrCb and this improved the performace to 98%. I also tried other kinds of classifier but late found that SVC Linear classifier was the best performing one.
 
 By trial and error method I chose to choose 6 differnt scales (1,1,25,1,5,2,2,5) for different area of interest.
 Here are few examples of the scaled images.
@@ -107,23 +103,23 @@ After that multiple rectangles are done then we use a heat map in the image to i
 ![alt text][image8]
 
 Once the heat images are found we then go ahead and then draw the rectangle as shown in the image below so that this can be  used as a tempelate to run it on videos.
+
 ![alt text][image11]
 
 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_output.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 The pipeline was created very similar to the images but one extra thing I had to do was to identify the region of images and multiple sliding window scales used to gather images of the cars. The scales vary from 1 to 2.5 which does well in identifying the car.
 
-The other extra thing I had to do with my images was to have a class and extract the most recent frames of data to draw the rectangles from the class variables. I used the recent most 5 rectangles from the video frames to identify the cars and hence this helped me get rid of most of the false positives.
+The other extra thing I had to do with my images was to have a class, store the frame data and extract the most recent frames of data to draw the rectangles from the class variables. In my pipeline I used the recent most 5 rectangles from the video frames to identify the cars and hence this helped me get rid of most of the false positives.
 
 The code for the pipeline can be found under the pipeline section.
-
 
 ---
 
@@ -131,7 +127,8 @@ The code for the pipeline can be found under the pipeline section.
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-1. More data is required to make analysis of the car images. This might not identify the cars of all types
-2. The whole video and vehicle mapping is done in day light and care must be taken to impelent it in dark light
+1. More data is required to make analysis of the car images. This might not identify the cars of all types.
+2. The whole video and vehicle mapping is done in day light and care must be taken to impelement it at night.
 3. It considers only cars we might see trucks and busses so other sets of images might be required.
+4. Here I assume car to be in lower half of the frame where as in reality if you are uphill it can be on the to end of the frame.
 
